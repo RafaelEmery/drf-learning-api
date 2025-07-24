@@ -1,7 +1,7 @@
 migrate:
 	python manage.py migrate
 
-migrations:
+make-migrations:
 	python manage.py makemigrations
 
 run:
