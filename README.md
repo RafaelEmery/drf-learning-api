@@ -6,8 +6,8 @@ Simple API to learn and practice Django REST Framework (DRF).
 
 #### TODOs:
 
-- [ ] Fix local running issues
-- [ ] Update django and DRF to latest versions
+- [X] Fix local running issues
+- [ ] ~~Update django and DRF to latest versions~~
 
 ---
 
