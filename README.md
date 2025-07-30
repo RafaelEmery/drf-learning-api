@@ -7,8 +7,9 @@ Simple API to learn and practice Django REST Framework (DRF).
 #### TODOs:
 
 - [X] Fix local running issues
+- [X] Add linter
 - [ ] ~~Update django and DRF to latest versions~~
-- [ ] Test every call using `generic API Views`
+- [ ] Test every call using `generic API Views` and `ViewSets`
 
 ---
 

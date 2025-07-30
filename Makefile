@@ -12,3 +12,6 @@ create-super-user:
 
 shell:
 	python manage.py shell
+
+format:
+	black .
