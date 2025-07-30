@@ -10,5 +10,10 @@ urlpatterns = [
     path('courses/generics/', CoursesAPIGenericView.as_view(), name='Courses'),
     path('courses/generics/<int:pk>/', CourseAPIGenericView.as_view(), name='Course'),
     path('reviews/generics/', ReviewsAPIGenericView.as_view(), name='Reviews'),
-    path('reviews/generics/<int:pk>/', ReviewAPIGenericView.as_view(), name='Review'),
+    path('reviews/generics/<int:review_pk>/', ReviewAPIGenericView.as_view(), name='Review'),
+
+    # Explicit PK from model when use both of them
+    # Update on other methods either to review_pk instead pk (review only because is using ReviewAPI views)
+    path('courses/<int:course_pk>/reviews/', ReviewsAPIGenericView.as_view(), name='Course and reviews'),
+    path('courses/<int:course_pk>/review/<int:review_pk>/', ReviewAPIGenericView.as_view(), name='Course and review')
 ]

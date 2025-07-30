@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.generics import get_object_or_404
 
 from .models import Course, Review
 from .serializers import CourseSerializer, ReviewSerializer
@@ -80,6 +81,11 @@ class ReviewsAPIGenericView(generics.ListCreateAPIView):
     """
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        if self.kwargs.get('course_pk'):
+            return self.queryset.filter(course_id=self.kwargs.get('course_pk'))
+        return super().get_queryset()
 
 
 class ReviewAPIGenericView(generics.RetrieveUpdateDestroyAPIView):
@@ -91,3 +97,11 @@ class ReviewAPIGenericView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    
+    def get_object(self):
+        if self.kwargs.get('course_pk'):
+            return get_object_or_404(
+                    course_id=self.kwargs.get('course_pk'),
+                    id=self.kwargs.get('review_pk')
+                ).first()
+        return get_object_or_404(self.get_queryset(), id=self.kwargs.get('review_pk'))
