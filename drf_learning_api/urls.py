@@ -22,4 +22,6 @@ urlpatterns = [
     
     # DRF default URLs mainly to login and logoff
     path('auth/', include('rest_framework.urls')),
+    
+    path('api/v1/', include('learning_app.urls')),
 ]
