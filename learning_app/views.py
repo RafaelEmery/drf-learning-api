@@ -7,10 +7,12 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import mixins
+from rest_framework import permissions
 
 
 from .models import Course, Review
 from .serializers import CourseSerializer, ReviewSerializer
+from .permissions import IsSuperUser
 
 # About generic views:
 # https://www.django-rest-framework.org/api-guide/generic-views/#concrete-view-classes
@@ -132,7 +134,16 @@ class CourseViewSet(viewsets.ModelViewSet):
     CourseViewSet using DRF ModelViewSet to abstract basic functions.
     Details: https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset
     """
-
+    
+    """
+    Using DjangoModelPermissions to handle permissions on Django pattern and
+    to modify at Django Admin /admin/auth/ endpoints.
+    Details: https://www.django-rest-framework.org/api-guide/permissions/#djangomodelpermissions
+    
+    Used a custom class to handle superuser on DELETE requests and the order is important 
+    on permission_classes tuple.
+    """
+    permission_classes = (IsSuperUser, permissions.DjangoModelPermissions,)
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
