@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Extra libs
     "django_filters",
+    "rest_framework.authtoken",
     "rest_framework",
     # All the custom apps
     "learning_app",
@@ -131,7 +132,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Specific settings for DRF
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",

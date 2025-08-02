@@ -16,12 +16,16 @@ from .views import (
 Router for the API v2
 Details: https://www.django-rest-framework.org/api-guide/routers/
 This will automatically create the URLs for the viewsets.
+Will be /api/v2/courses|reviews.
 """
 router = SimpleRouter()
 router.register("courses", CourseViewSet)
 router.register("review", ReviewViewSet)
 
-
+"""
+Patterns for API v1
+Will be /api/v1/courses|reviews with generics or anything else defined.
+"""
 urlpatterns = [
     path("courses/", CourseAPIView.as_view(), name="Courses"),
     path("reviews/", ReviewAPIView.as_view(), name="Reviews"),
