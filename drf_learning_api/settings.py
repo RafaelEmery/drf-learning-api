@@ -140,4 +140,17 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 2,
+    "DEFAULT_THROTTLE_CLASSES": (
+        # Anonymous and authenticated user limits
+        # Details: https://www.django-rest-framework.org/api-guide/throttling/#api-reference
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        # Can be second, day, month, year
+        # Returns 429 (Too Many Requests)
+        # Details: https://www.django-rest-framework.org/api-guide/throttling/#throttling
+        "anon": "5/minute",
+        "user": "10/minute",
+    },
 }

@@ -134,7 +134,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     CourseViewSet using DRF ModelViewSet to abstract basic functions.
     Details: https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset
     """
-    
+
     """
     Using DjangoModelPermissions to handle permissions on Django pattern and
     to modify at Django Admin /admin/auth/ endpoints.
@@ -143,7 +143,10 @@ class CourseViewSet(viewsets.ModelViewSet):
     Used a custom class to handle superuser on DELETE requests and the order is important 
     on permission_classes tuple.
     """
-    permission_classes = (IsSuperUser, permissions.DjangoModelPermissions,)
+    permission_classes = (
+        IsSuperUser,
+        permissions.DjangoModelPermissions,
+    )
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
