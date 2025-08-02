@@ -5,14 +5,14 @@ from .models import Course, Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     """
-    Serializer for reviews only
+    Serializer for reviews only.
     """
 
     class Meta:
         model = Review
         """
         The write_only on email means that won't be available at 
-        GET review requests and only at POST review requests
+        GET review requests and only at POST review requests.
         """
         extra_kwargs = {"email": {"write_only": True}}
         fields = [
@@ -29,11 +29,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     """
-    Serializer for courses and reviews
+    Serializer for courses and reviews.
     """
 
     """
-    Nested relationships are not supported by default in DRF
+    Nested relationships are not supported by default in DRF.
     many=True indicates all the entities from the relation
     read_only=True indicates that this field is not writable
     Details: https://www.django-rest-framework.org/api-guide/fields/#nested-relationships
@@ -41,9 +41,9 @@ class CourseSerializer(serializers.ModelSerializer):
     # reviews = ReviewSerializer(many=True, read_only=True)
 
     """
-    Using the HyperLikedRelatedField class
+    Using the HyperLikedRelatedField class.
     To deal better with relationships, showing a URL on reviews array instead
-    of all serialized object from reviews
+    of all serialized object from reviews.
     Details: https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/#hyperlinking-our-api
     """
     # reviews = serializers.HyperlinkedRelatedField(
@@ -51,15 +51,15 @@ class CourseSerializer(serializers.ModelSerializer):
     # )
 
     """
-    Using PrimaryKeyRelatedField
+    Using PrimaryKeyRelatedField.
     Showing only the ID of the related reviews instead the full object
-    or a bunch of URLs 
+    or a bunch of URLs .
     Details: https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/#hyperlinking-our-api
     """
     reviews = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     """
-    Many relation arguments on RelatedField base class
+    Many relation arguments on RelatedField base class.
     MANY_RELATION_KWARGS = (
         'read_only', 'write_only', 'required', 'default', 'initial', 'source',
         'label', 'help_text', 'style', 'error_messages', 'allow_empty',

@@ -5,6 +5,7 @@ class Base(models.Model):
     """
     auto_now_add argument set to True, which means that the field
     will be automatically set to now when the object is first created.
+    Details for Model: https://docs.djangoproject.com/en/5.2/topics/db/models/
     """
 
     published_at = models.DateTimeField(auto_now_add=True)
@@ -31,6 +32,7 @@ class Course(Base):
     class Meta:
         verbose_name = "Course"
         verbose_name_plural = "Courses"
+        ordering = ["id"]
 
     """
     toString like method for Course model.

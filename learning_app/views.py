@@ -18,7 +18,7 @@ from .serializers import CourseSerializer, ReviewSerializer
 
 class CourseAPIView(APIView):
     """
-    Courses API view to define all endpoints
+    Courses API view to define all endpoints.
     """
 
     permission_classes = (AllowAny,)
@@ -42,9 +42,9 @@ class CourseAPIView(APIView):
 
 class CoursesAPIGenericView(generics.ListCreateAPIView):
     """
-    Generic view based of ListCreateAPIView to abstract the CourseAPIView functions
-    generics.ListCreateAPIView - List and create
-    Methods that doesn't need any URL parameters
+    Generic view based of ListCreateAPIView to abstract the CourseAPIView functions.
+    generics.ListCreateAPIView - List and create.
+    Methods that doesn't need any URL parameters.
     """
 
     queryset = Course.objects.all()
@@ -53,10 +53,10 @@ class CoursesAPIGenericView(generics.ListCreateAPIView):
 
 class CourseAPIGenericView(generics.RetrieveUpdateDestroyAPIView):
     """
-    Generic view based of RetrieveUpdateDestroyAPIView to abstract the CourseAPIView functions
-    generics.RetrieveUpdateDestroyAPIView - Retrieve, update and destroy
-    Must be at a different class because it needs the PK (id)
-    The PK can be passed as URL param
+    Generic view based of RetrieveUpdateDestroyAPIView to abstract the CourseAPIView functions.
+    generics.RetrieveUpdateDestroyAPIView - Retrieve, update and destroy.
+    Must be at a different class because it needs the PK (id).
+    The PK can be passed as URL param.
     """
 
     queryset = Course.objects.all()
@@ -65,7 +65,7 @@ class CourseAPIGenericView(generics.RetrieveUpdateDestroyAPIView):
 
 class ReviewAPIView(APIView):
     """
-    Review API view to define all endpoints
+    Review API view to define all endpoints.
     """
 
     permission_classes = (AllowAny,)
@@ -89,9 +89,9 @@ class ReviewAPIView(APIView):
 
 class ReviewsAPIGenericView(generics.ListCreateAPIView):
     """
-    Generic view based of ListCreateAPIView to abstract the ReviewAPIView functions
-    generics.ListCreateAPIView - List and create
-    Methods that doesn't need any URL parameters
+    Generic view based of ListCreateAPIView to abstract the ReviewAPIView functions.
+    generics.ListCreateAPIView - List and create.
+    Methods that doesn't need any URL parameters.
     """
 
     queryset = Review.objects.all()
@@ -106,9 +106,9 @@ class ReviewsAPIGenericView(generics.ListCreateAPIView):
 class ReviewAPIGenericView(generics.RetrieveUpdateDestroyAPIView):
     """
     Generic view based of RetrieveUpdateDestroyAPIView to abstract the ReviewAPIView functions
-    generics.RetrieveUpdateDestroyAPIView - Retrieve, update and destroy
-    Must be at a different class because it needs the PK (id)
-    The PK can be passed as URL param
+    generics.RetrieveUpdateDestroyAPIView - Retrieve, update and destroy.
+    Must be at a different class because it needs the PK (id).
+    The PK can be passed as URL param.
     """
 
     queryset = Review.objects.all()
@@ -129,18 +129,35 @@ API version 2
 
 class CourseViewSet(viewsets.ModelViewSet):
     """
-    CourseViewSet using DRF ModelViewSet to abstract basic functions
+    CourseViewSet using DRF ModelViewSet to abstract basic functions.
     Details: https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset
     """
 
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+    """
+    Only by adding the DEFAULT_PAGINATION_CLASS: rest_framework.pagination.PageNumberPagination
+    on settings file, it already deals with pagination.
+    Has a warning for not ordered values by default, values must be ordered on models
+    Details: https://www.django-rest-framework.org/api-guide/pagination/#pagination
+    """
+
     @action(detail=True, methods=["get"])
     def reviews(self, request, id=None):
-        course = self.get_object()
-        # many=True indicates all the entities from the relation
-        review_serializer = ReviewSerializer(course.reviews.all(), many=True)
+        """
+        But the pagination by default doesn't apply to custom methods on ViewSets
+        (/api/v2/courses/) so it needs to be defined.
+        """
+        self.pagination_class.page_size = 2
+        reviews = Review.objects.filter(course_id=id)
+        page = self.paginate_queryset(reviews)
+
+        if page is not None:
+            review_serializer = ReviewSerializer(page, many=True)
+            return self.get_paginated_response(review_serializer.data)
+
+        review_serializer = ReviewSerializer(reviews, many=True)
 
         return Response(review_serializer.data)
 
@@ -148,7 +165,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 # To be used below
 # class ReviewViewSet(viewsets.ModelViewSet):
 #     """
-#     Review using DRF ModelViewSet to abstract basic functions
+#     Review using DRF ModelViewSet to abstract basic functions.
 #     Details: https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset
 #     """
 
@@ -165,7 +182,7 @@ class ReviewViewSet(
     viewsets.GenericViewSet,
 ):
     """
-    Using DRF mixins to abstract basic functions
+    Using DRF mixins to abstract basic functions.
     Details: https://www.django-rest-framework.org/api-guide/generic-views/#listmodelmixin
     ModelViewSet above means (inheritance):
         mixins.ListModelMixin,
